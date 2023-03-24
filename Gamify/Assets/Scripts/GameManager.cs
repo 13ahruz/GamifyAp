@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
     public List<string> courseIds = new List<string>();
 
     public TMP_Text CourseName;
-    public List<CourseResult.Courses> courses;
     [SerializeField]
     private GameObject courseInScreen;
 
@@ -72,14 +71,13 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log(courseId);
             }
-
-
         }
         catch (Exception ex)
         {
             Debug.Log(ex.Message);
         }
     }
+
 
     public async void GetCourseInfo(string courseId)
     {
@@ -105,6 +103,8 @@ public class GameManager : MonoBehaviour
             Debug.Log(jsonResponse);
             Course cn = JsonUtility.FromJson<Course>(jsonResponse);
             Debug.Log($"Course name: {cn.name}");
+            Enviroment.Instance.portals[0].gameObject.SetActive(true);
+            Enviroment.Instance.portals[0].GetComponentInChildren<TextMeshProUGUI>().text = cn.name;
         }
         catch (Exception ex)
         {
