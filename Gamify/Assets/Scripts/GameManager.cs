@@ -1,13 +1,10 @@
 using System;
-using System.Net;
-using System.IO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 using TMPro;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,12 +15,12 @@ public class GameManager : MonoBehaviour
     private const string TOKEN_ENDPOINT = "https://ada-staging.blackboard.com/learn/api/public/v1/oauth2/token";
     private const string BASE_URL = "https://ada-staging.blackboard.com";
 
+    public List<string> courseIds = new List<string>();
 
     public TMP_Text CourseName;
     public List<CourseResult.Courses> courses;
     [SerializeField]
     private GameObject courseInScreen;
-    public List<string> course_Ids;
 
     private void Update()
     {
@@ -34,8 +31,11 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.U))
         {
-            GameObject spawnedCourse = Instantiate(courseInScreen, Vector3.zero, Quaternion.identity);
-            spawnedCourse.GetComponentInChildren<TextMeshProUGUI>().text = courses[0].id;
+            foreach (string courseId in courseIds)
+            {
+                Debug.Log("getting course info");
+                GetCourseInfo(courseId);
+            }
         }
     }
 
@@ -60,14 +60,19 @@ public class GameManager : MonoBehaviour
 
         try
         {
-            Debug.Log(jsonResponse);
 
-            CourseResult cr = JsonUtility.FromJson<CourseResult>(jsonResponse);
-            foreach (CourseResult.Courses crr in cr.results)
+            MyCourses myCourses = JsonConvert.DeserializeObject<MyCourses>(jsonResponse);
+
+            foreach (Course course in myCourses.results)
             {
-                course_Ids.Add(crr.courseId);
-                GetCourseInfo(crr.courseId);
+                courseIds.Add(course.courseId);
             }
+
+            foreach (string courseId in courseIds)
+            {
+                Debug.Log(courseId);
+            }
+
 
         }
         catch (Exception ex)
@@ -78,7 +83,7 @@ public class GameManager : MonoBehaviour
 
     public async void GetCourseInfo(string courseId)
     {
-        using var www3 = UnityWebRequest.Get($"{BASE_URL}/learn/api/public/v3/courses/courseId:" + courseId);
+        using var www3 = UnityWebRequest.Get($"{BASE_URL}/learn/api/public/v3/courses/" + courseId); ;
         www3.SetRequestHeader("Authorization", $"Bearer {LoginManager.Instance.accessToken}");
         www3.SetRequestHeader("Content-Type", "application/json");
         var operation = www3.SendWebRequest();
@@ -98,13 +103,8 @@ public class GameManager : MonoBehaviour
         try
         {
             Debug.Log(jsonResponse);
-
-            CourseResult cr = JsonUtility.FromJson<CourseResult>(jsonResponse);
-            foreach (CourseResult.Courses crr in cr.results)
-            {
-                courses.Add(crr);
-            }
-            Debug.Log(courses);
+            Course cn = JsonUtility.FromJson<Course>(jsonResponse);
+            Debug.Log($"Course name: {cn.name}");
         }
         catch (Exception ex)
         {

@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System;
 
 [System.Serializable]
@@ -16,6 +14,12 @@ public class Course
     public EnrollmentCourse enrollment;
     public LocaleCourse locale;
     public string externalAccessUrl;
+}
+
+[System.Serializable]
+public class MyCourses
+{
+    public List<Course> results { get; set; }
 }
 
 [System.Serializable]
