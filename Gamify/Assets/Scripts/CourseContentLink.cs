@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
-using System;
 
 public class CourseContentLink : MonoBehaviour, IPointerClickHandler
 {
@@ -12,8 +11,14 @@ public class CourseContentLink : MonoBehaviour, IPointerClickHandler
         Application.OpenURL(linkUrl);
     }
 
-    internal void SetLinkData(string v1, string v2, string v3)
+    public void SetLinkData(string linkID, string linkText, string linkUrl)
     {
-        throw new NotImplementedException();
+        this.linkUrl = linkUrl;
+        TextMeshProUGUI tmp = GetComponent<TextMeshProUGUI>();
+        tmp.text = linkText;
+        tmp.color = Color.blue;
+        tmp.fontStyle = FontStyles.Bold;
+        tmp.richText = true;
+        tmp.rectTransform.sizeDelta = new Vector2(tmp.preferredWidth, tmp.preferredHeight);
     }
 }

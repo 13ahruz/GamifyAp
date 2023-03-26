@@ -23,35 +23,25 @@ public class MyCourses
 }
 
 [System.Serializable]
-public class CourseResult
+public class Contents
 {
-    public List<Courses> results;
-    [System.Serializable]
-    public class Courses
-    {
-        public string id;
-        public string userId;
-        public string courseId;
-        public string dataSourceId;
-        public string created;
-        public string modified;
-        public Availability availability;
-        public string courseRoleId;
-        public string lastAccessed;
-        public string courseName;
-    }
+    public List<Content> results;
 }
 
-public class CourseResponse
+[System.Serializable]
+public class Content
 {
-    public List<CourseRes> Results { get; set; }
-}
-
-public class CourseRes
-{
-    public string DisplayName { get; set; }
-    public string CourseId { get; set; }
-    public string Id { get; set; }
+    public string id;
+    public string title;
+    public DateTime created;
+    public DateTime modified;
+    public int position;
+    public bool hasChildren;
+    public bool launchInNewWindow;
+    public bool reviewable;
+    public Availability availability;
+    public ContentHandlerResult contentHandler;
+    public List<LinkResult> links;
 }
 
 

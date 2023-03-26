@@ -21,7 +21,7 @@ public class BbRestLearnAPI : MonoBehaviour
     TokenManager tm;
     BbLearnDelegation bbld;
     GroupList glist;
-    
+
 
     //TextMeshPros
     public TMP_Text CourseName;
@@ -439,7 +439,7 @@ public class BbRestLearnAPI : MonoBehaviour
             }
         }
         Debug.Log($"Selected MeetingId is: {selectedMeetingId}");
-       
+
 
         // Search for the user's attendance status
         Attendance userStatus = statusResponse.results.Find(status =>
